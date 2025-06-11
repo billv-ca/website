@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bill Vandenberk</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* 8-bit-style background using CSS */
+    body {
+      margin: 0;
+      font-family: 'Press Start 2P', cursive;
+      color: #00ffcc;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* CRT Scan Lines - now on top of everything */
+    .scan-lines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(90deg,
+          #000000,
+          #000000 1px,
+          #111111 1px,
+          #111111 2px);
+      z-index: 10000;
+      animation: scanLines 1s linear infinite;
+      pointer-events: none;
+      /* So the scan lines don't interfere with clicks */
+    }
+
+    @keyframes scanLines {
+      0% {
+        background-position: 0 0;
+      }
+
+      100% {
+        background-position: 0 100px;
+      }
+    }
+
+    /* Pixel Grid - now behind the content */
+    .pixel-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(45deg,
+          #000000,
+          #000000 1px,
+          #111111 1px,
+          #111111 2px);
+      opacity: 0.2;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    nav {
+      padding: 10px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #111111;
+      color: #00ffcc;
+      position: relative;
+      z-index: 10002;
+    }
+
+    nav h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #00ffcc;
+    }
+
+    nav .icon {
+      background: linear-gradient(135deg, #00ffcc, #00cccc);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: help;
+      transition: all 0.3s ease;
+      z-index: 10001;
+    }
+
+    nav .icon i {
+      color: #000000;
+      font-size: 1.2rem;
+    }
+
+    .section {
+      max-width: 1000px;
+      margin: auto;
+      padding: 30px 20px;
+      background-color: #111111;
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      margin-bottom: 40px;
+      box-shadow: 0 0 15px #00ffcc;
+      position: relative;
+      z-index: 10001;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      color: #00ffcc;
+      position: relative;
+      z-index: 10001;
+    }
+
+    a {
+      text-align: center;
+      margin-top: 50px;
+      color: #00ffcc;
+      position: relative;
+      z-index: 10001;
+    }
+
+    .date-range {
+      float: right;
+      padding-right: 20px;
+    }
+
+    .game-style {
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    .game-style ul {
+      text-align: left;
+      font-size: 1.2rem;
+    }
+
+    .game-style ul p {
+      display: inline;
+    }
+
+    .game-style h2 {
+      margin-bottom: 10px;
+      color: #00ffcc;
+      text-shadow: 0 0 5px #00ffcc;
+    }
+
+    .game-style p {
+      color: #00cccc;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .game-style strong {
+      color: #ffcc00;
+      text-shadow: 0 0 3px #ffcc00;
+    }
+
+    #gameCanvas {
+      display: none;
+      z-index: 10002;
+      top: 0;
+      position: fixed;
+    }
+  </style>
+
+</head>
+
+<body>
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+  <!-- Scan Lines on top of everything -->
+  <div class="scan-lines"></div>
+
+  <!-- Pixel Grid in background -->
+  <div class="pixel-grid"></div>
+
+  <!-- Content -->
+  <nav>
+    <h1>Bill Vandenberk</h1>
+    <span class="icon" onclick="displayGame();">
+      <i class="fa-solid fa-gamepad"></i>
+    </span>
+  </nav>
+
+  <section class="section game-style">
+    <h2>About Me</h2>
+    <p>Hi, I'm Bill Vandenberk. A leader, developer, thinker, and creator. I love building things. Whether it's
+      through code, design, or ideas, I'm always looking for ways to optimize and create something meaningful.
+    </p>
+  </section>
+
+  <section class="section game-style">
+    <h2>Experience</h2>
+    <ul>
+      <li>
+        <p><strong>Sr. Manager, DevOps Engineering @ Fortis Games</strong><span class="date-range">2024 - Now</span></p>
+        <br>
+        <p>Leading a team of DevOps engineers to shape the future of infrastructure and automation at Fortis Games.</p>
+      </li>
+      <li>
+        <p><strong>Director, Cloud Architecture @ Tulip</strong><span class="date-range">2013 - 2024</span></p><br>
+        <p>I started as a co-op in 2013 and rose through the ranks to lead the application security and cloud platform
+          teams. While working for with Tulip I learned tons about leading teams and working with the cloud.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section game-style">
+    <h2>Skills</h2>
+    <ul>
+      <li>
+        <p><strong>IaC</strong> - Terraform, Cloudformation, Troposphere</p>
+      </li>
+      <li>
+        <p><strong>Cloud</strong> - AWS, AWS China, GCP</p>
+      </li>
+      <li>
+        <p><strong>Containers</strong> - Docker, Containerd, ECS, Kubernetes</p>
+      </li>
+      <li>
+        <p><strong>Networking</strong> - VPC, Load Balancing, VPN</p>
+      </li>
+      <li>
+        <p><strong>CI/CD</strong> - Gitlab runners, Jenkins, ArgoCD, Atlantis</p>
+      </li>
+      <li>
+        <p><strong>Security</strong> - Security Groups, Firewall, Falco</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section game-style">
+    <h2>Interests</h2>
+    <ul>
+      <li>
+        <p><strong>Homelab</strong> - sharing my homelab adventures on <a
+            href="https://github.com/billv-ca/homelab-documentation">GitHub</a></p>
+      </li>
+      <li>
+        <p><strong>AI</strong> - playing with generative AI in the homelab to generate this site!</p>
+      </li>
+      <li>
+        <p><strong>Video Games</strong> - how I stay connected with my friends.</p>
+      </li>
+      <li>
+        <p><strong>Cooking and Baking</strong> - spending time in the kitchen is a fun passtime that relieves stress.
+        </p>
+      </li>
+      <li>
+        <p><strong>Cycling</strong> - trails or roads, I'm in for both!</p>
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>© 2025 Bill Vandenberk. All rights reserved.</p>
+    <p><a href="mailto:bill@vandenberk.me">Contact Me</a>&nbsp;&nbsp;&nbsp;<a
+        href="https://www.linkedin.com/in/bill-vandenberk-98361089/">LinkedIn</a></p>
+  </footer>
+</body>
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Key state tracking
+  const keys = {
+    left: false,
+    right: false,
+    space: false,
+    enter: false
+  };
+
+  window.addEventListener('keydown', function (e) {
+    if (e.keyCode == 32 && e.target == document.body) {
+      e.preventDefault();
+    }
+  });
+
+  // Event listeners for keyboard input
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') keys.left = true;
+    if (e.key === 'ArrowRight') keys.right = true;
+    if (e.key === ' ') keys.space = true;
+    if (e.key === 'Enter') keys.enter = true;
+  });
+
+  document.addEventListener('keyup', (e) => {
+    if (e.key === 'ArrowLeft') keys.left = false;
+    if (e.key === 'ArrowRight') keys.right = false;
+    if (e.key === ' ') keys.space = false;
+    if (e.key === 'Enter') keys.enter = false;
+  });
+
+  // Game state
+  let score = 0;
+  let gameOver = false;
+  let lastSpawnTime = Date.now();
+  let lastBulletTime = Date.now();
+
+  // Player object
+  const player = {
+    x: canvas.width / 2,
+    y: canvas.height / 2,
+    radius: 12,
+    rotation: - Math.PI / 2,
+    color: "white"
+  };
+
+  // Bullet and enemy arrays
+  const bullets = [];
+  const enemies = [];
+
+  // Fire a bullet
+  function fireBullet() {
+    bullets.push({
+      x: player.x,
+      y: player.y,
+      radius: 3,
+      angle: player.rotation
+    });
+  }
+
+  function setPlayerLocation() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    player.x = canvas.width / 2;
+    player.y = canvas.height / 2;
+  }
+
+  // Spawn an enemy
+  function spawnEnemy() {
+    const edge = Math.floor(Math.random() * 4);
+    let x, y;
+    switch (edge) {
+      case 0: // Top
+        x = Math.random() * canvas.width;
+        y = 0;
+        break;
+      case 1: // Bottom
+        x = Math.random() * canvas.width;
+        y = canvas.height;
+        break;
+      case 2: // Left
+        x = 0;
+        y = Math.random() * canvas.height;
+        break;
+      case 3: // Right
+        x = canvas.width;
+        y = Math.random() * canvas.height;
+        break;
+    }
+    enemies.push({
+      x: x,
+      y: y,
+      radius: 10,
+      alpha: 0,
+      speed: 1, + (score/50)
+    });
+  }
+
+  // Update game state
+  function update() {
+    // Rotate player
+    if (keys.left) player.rotation -= 0.04;
+    if (keys.right) player.rotation += 0.04;
+    setPlayerLocation();
+
+    // Move bullets
+    for (let i = bullets.length - 1; i >= 0; i--) {
+      const bullet = bullets[i];
+      bullet.x += Math.cos(bullet.angle) * 5;
+      bullet.y += Math.sin(bullet.angle) * 5;
+      if (bullet.x < 0 || bullet.x > canvas.width || bullet.y < 0 || bullet.y > canvas.height) {
+        bullets.splice(i, 1);
+      }
+    }
+
+    // Spawn enemies
+    const spawnInterval = Math.max(100, 1000 - score * 2);
+    if (Date.now() - lastSpawnTime > spawnInterval) {
+      spawnEnemy();
+      lastSpawnTime = Date.now();
+    }
+
+    // Update enemies
+    for (let enemy of enemies) {
+      const dx = player.x - enemy.x;
+      const dy = player.y - enemy.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance > 0) {
+        enemy.x += (dx / distance) * enemy.speed;
+        enemy.y += (dy / distance) * enemy.speed;
+      }
+      enemy.alpha += 0.01;
+      if (enemy.alpha > 1) enemy.alpha = 1;
+    }
+
+    // Check for collision between enemies and player
+    for (let enemy of enemies) {
+      const dx = player.x - enemy.x;
+      const dy = player.y - enemy.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance < player.radius + enemy.radius) {
+        gameOver = true;
+        break;
+      }
+    }
+
+    // Check for collision between bullets and enemies
+    for (let i = bullets.length - 1; i >= 0; i--) {
+      const bullet = bullets[i];
+      for (let j = enemies.length - 1; j >= 0; j--) {
+        const enemy = enemies[j];
+        const dx = enemy.x - bullet.x;
+        const dy = enemy.y - bullet.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < bullet.radius + enemy.radius) {
+          score += 1;
+          enemies.splice(j, 1);
+          bullets.splice(i, 1);
+          break;
+        }
+      }
+    }
+
+    // Fire bullet
+    if (Date.now() - lastBulletTime > 100) {
+      fireBullet();
+      lastBulletTime = Date.now();
+    }
+
+  }
+
+  // Draw the player as a triangle
+  function drawPlayer() {
+    ctx.save();
+    ctx.translate(player.x, player.y);
+    ctx.rotate(player.rotation + (Math.PI / 2));
+    ctx.beginPath();
+    ctx.moveTo(0, -player.radius); // Tip at top
+    ctx.lineTo(-player.radius, player.radius); // Left base
+    ctx.lineTo(player.radius, player.radius); // Right base
+    ctx.closePath();
+    ctx.fillStyle = player.color;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // Draw game elements
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw player
+    drawPlayer();
+
+    // Draw bullets
+    for (let bullet of bullets) {
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.arc(bullet.x, bullet.y, bullet.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Draw enemies
+    for (let enemy of enemies) {
+      ctx.fillStyle = `rgba(255, 0, 0, ${enemy.alpha})`;
+      ctx.beginPath();
+      ctx.arc(enemy.x, enemy.y, enemy.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Draw score
+    ctx.font = '20px "Press Start 2P"';
+    let textWidth = ctx.measureText('Score: ' + score).width;
+    ctx.fillStyle = 'black';
+    ctx.fillRect(10, canvas.height - 60, textWidth, 30);
+    ctx.fillStyle = '#00ffcc';
+    ctx.fillText('Score: ' + score, 10, canvas.height - 30);
+
+    // Game over message
+    if (gameOver) {
+      ctx.save()
+      ctx.font = '20px "Press Start 2P"';
+      let textWidth = ctx.measureText('or touch anywhere').width;
+      ctx.fillStyle = 'black';
+      ctx.fillRect(canvas.width / 2 - textWidth / 2, 75, textWidth, 180);
+      ctx.fillStyle = '#00ffcc'; ctx.textAlign = 'center';
+      ctx.fillText('Game Over!', canvas.width / 2, 100);
+      ctx.fillText('Press Enter', canvas.width / 2, 130);
+      ctx.fillText('or touch anywhere', canvas.width / 2, 160);
+      ctx.fillText('to restart', canvas.width / 2, 190);
+      ctx.restore();
+    }
+  }
+
+  // Main game loop
+  function gameLoop() {
+    update();
+    draw();
+    if (!gameOver) {
+      requestAnimationFrame(gameLoop);
+    }
+  }
+
+  function resetGame() {
+    // Reset game state
+    score = 0;
+    gameOver = false;
+    lastSpawnTime = Date.now();
+    lastBulletTime = Date.now();
+    bullets.length = 0;
+    enemies.length = 0;
+    player.rotation = 0;
+  }
+
+  // Handle game restart
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && gameOver) {
+      resetGame();
+      gameLoop();
+    }
+  });
+
+  function displayGame() {
+    let canvasElement = document.getElementById("gameCanvas");
+    if (canvasElement.style.display !== "block") {
+      document.getElementById("gameCanvas").style.display = "block";
+      resetGame();
+      gameLoop();
+    } else {
+      canvasElement.style.display = "none";
+      gameOver = true;
+    }
+  }
+
+  // Set up touch events for mobile, etc
+  canvas.addEventListener("touchmove", function (e) {
+    pos = getTouchPos(canvas, e);
+    if (pos.x > canvas.width / 2) {
+      keys.right = true;
+    } else {
+      keys.left = true;
+    }
+    e.preventDefault();
+  }, false);
+  canvas.addEventListener("touchstart", function (e) {
+    pos = getTouchPos(canvas, e);
+    if (gameOver) {
+      resetGame();
+      gameLoop();
+    }
+    if (pos.x > canvas.width / 2) {
+      keys.right = true;
+    } else {
+      keys.left = true;
+    }
+    e.preventDefault();
+  }, false);
+  canvas.addEventListener("touchend", function (e) {
+    keys.left = false;
+    keys.right = false;
+  }, false);
+
+
+  // Get the position of a touch relative to the canvas
+  function getTouchPos(canvasDom, touchEvent) {
+    var rect = canvasDom.getBoundingClientRect();
+    return {
+      x: touchEvent.touches[0].clientX - rect.left,
+      y: touchEvent.touches[0].clientY - rect.top
+    };
+  }
+</script>
+</html>
