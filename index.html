@@ -504,7 +504,7 @@
   function gameLoop() {
     const currentTime = performance.now();
     
-    if ((currentTime - lastUpdate) >= targetFrameTime){
+    if ((currentTime - lastUpdate) >= (targetFrameTime - 2)){
       lastUpdate = currentTime;
       update();
     }
