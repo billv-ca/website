@@ -301,6 +301,8 @@
   let gameOver = false;
   let lastSpawnTime = Date.now();
   let lastBulletTime = Date.now();
+  let lastUpdate = 0;
+  const targetFrameTime = 1000 / 60;
 
   // Player object
   const player = {
@@ -500,7 +502,12 @@
 
   // Main game loop
   function gameLoop() {
-    update();
+    const currentTime = performance.now();
+    
+    if ((performance.now() - lastUpdate) >= targetFrameTime){
+      let lastUpdate = performance.now();
+      update();
+    }
     draw();
     if (!gameOver) {
       requestAnimationFrame(gameLoop);
